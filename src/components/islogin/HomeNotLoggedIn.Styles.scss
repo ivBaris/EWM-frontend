@@ -1,0 +1,40 @@
+.HomeNotLoggedIn {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &--info {
+    margin: 0 1rem;
+    padding: 1rem;
+    background-color: #d7d7d7e8;
+    border-radius: 5px;
+
+    @media only screen and (min-width: 540px) {
+      margin: 4rem 2rem 0;
+    }
+
+    @media only screen and (min-width: 960px) {
+      width: 30rem;
+      margin: 8rem 10rem 0;
+    }
+
+    img {
+      width: 15rem;
+
+      @media only screen and (min-width: 540px) {
+        width: 12rem;
+      }
+    }
+
+    h4 {
+      font-weight: 700;
+    }
+
+    &-text {
+      padding: 1rem 0;
+      color: #757575;
+    }
+  }
+}

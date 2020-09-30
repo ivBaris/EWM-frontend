@@ -1,0 +1,28 @@
+.AuthPage {
+  margin: 7rem 3rem;
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .MuiFormControl-root {
+      padding-top: 1.2rem;
+
+      &:first-child {
+        padding-top: 0.3rem;
+
+        .MuiFormLabel-root {
+          top: 0.3rem;
+        }
+      }
+
+      .MuiFormLabel-root {
+        top: 1.2rem;
+      }
+    }
+
+    .MuiButton-root {
+      margin: 2.5rem 0 1rem;
+      text-transform: none;
+    }
+  }
+}

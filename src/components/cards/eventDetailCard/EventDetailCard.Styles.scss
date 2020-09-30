@@ -1,0 +1,22 @@
+.MuiTypography-root {
+  display: flex;
+}
+
+.MuiAvatar-colorDefault {
+  background-color: "#318fb5";
+}
+
+.information {
+  display: flex;
+  margin: 0.5rem 0.2rem;
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    padding: 0.2rem;
+  }
+}
+
+.MuiButton-startIcon {
+  margin-bottom: 0.1rem;
+}

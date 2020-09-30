@@ -1,0 +1,50 @@
+.event-card {
+  .MuiCardActionArea-root {
+    background-color: #d7d7d7e8 !important;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+
+    &--date,
+    &--location {
+      display: flex;
+      align-items: baseline;
+    }
+
+    &--user {
+      display: flex;
+      flex-direction: column;
+
+      &-title {
+        padding-top: 0.4rem;
+        font-size: 0.85rem;
+        color: #318fb5;
+      }
+
+      &-value {
+        padding-top: 0.2rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+
+    &--value,
+    &--title {
+      font-size: 0.85rem;
+    }
+
+    &--value {
+      padding-left: 0.4rem;
+    }
+
+    &--title {
+      padding: 0.2rem 0;
+      color: #318fb5;
+    }
+  }
+}
