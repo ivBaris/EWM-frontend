@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./index.css";
 import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
-// import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./serviceWorker";
 
 const theme = createMuiTheme({
   palette: {
@@ -44,17 +43,4 @@ export default theme;
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-registerServiceWorker();
-
-// function createIndexedDB() {
-//   if (!("indexedDB" in window)) {
-//     return null;
-//   }
-//   return idb.open("dashboardr", 1, function (upgradeDb) {
-//     if (!upgradeDb.objectStoreNames.contains("events")) {
-//       const eventsOS = upgradeDb.createObjectStore("events", { keyPath: "id" });
-//     }
-//   });
-// }
-
-// const dbPromise = createIndexedDB();
+serviceWorker.register();
