@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 export const useAuth = () => {
   const [token, setToken] = useState(false);
@@ -19,12 +19,15 @@ export const useAuth = () => {
     localStorage.removeItem("userData");
   }, []);
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("userData"));
-    if (data && data.token) {
-      login(data.userId, data, token);
-    }
-  }, [login]);
+  useEffect(
+    () => {
+      const data = JSON.parse(localStorage.getItem("userData"));
+      if (data && data.token) {
+        login(data.userId, data, token);
+      }
+    }, // eslint-disable-next-line
+    [login]
+  );
 
   return { token, login, logout, userId };
 };
