@@ -33,7 +33,7 @@ const EventCard = (props) => {
     const fetchUserName = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/${props.creatorId}`
+          `${process.env.REACT_APP_BACKEND_URL}/users/${props.creatorId}`
         );
 
         setLoggedInUserName(responseData.user.name);
@@ -45,7 +45,7 @@ const EventCard = (props) => {
   const participateOnEvent = async () => {
     try {
       await sendRequest(
-        `http://localhost:5000/api/events/event/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
         "PUT",
         JSON.stringify({
           participants: userId,
@@ -61,7 +61,7 @@ const EventCard = (props) => {
   const removeParticipation = async () => {
     try {
       await sendRequest(
-        `http://localhost:5000/api/events/event/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
         "PATCH",
         JSON.stringify({
           participants: userId,
@@ -77,7 +77,7 @@ const EventCard = (props) => {
   const eventDeleteHandler = async () => {
     try {
       await sendRequest(
-        `http://localhost:5000/api/events/event/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
         "DELETE"
       );
       setDeletionSuccess(true);

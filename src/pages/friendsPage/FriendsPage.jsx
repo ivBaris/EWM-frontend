@@ -26,7 +26,7 @@ const FriendsPage = () => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/${auth.userId}/friends`
+          `${process.env.REACT_APP_BACKEND_URL}/users/${auth.userId}/friends`
         );
 
         setLoadedFriends(responseData);
@@ -38,7 +38,7 @@ const FriendsPage = () => {
   const onSubmit = async (friend) => {
     try {
       await sendRequest(
-        `http://localhost:5000/api/users//${auth.userId}/friends`,
+        `${process.env.REACT_APP_BACKEND_URL}/users//${auth.userId}/friends`,
         "PATCH",
         JSON.stringify({
           email: friend.email,
