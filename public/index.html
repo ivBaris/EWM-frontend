@@ -27,7 +27,26 @@
     <title>React App</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker
+          .register("./custom-sw.js")
+          .then(function () {
+            return navigator.serviceWorker.ready;
+          })
+          .then(function (registration) {
+            document
+              .getElementById("addEventForm")
+              .addEventListener("submit", (event) => {
+                if (registration.sync) {
+                  registration.sync.register("addEvent").catch(function (err) {
+                    return err;
+                  });
+                }
+              });
+          });
+      }
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

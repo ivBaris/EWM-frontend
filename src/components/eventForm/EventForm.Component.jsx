@@ -74,11 +74,11 @@ const EventForm = () => {
 
   const history = useHistory();
 
-  const registerBackgroundSync = async () => {
-    const registration = await navigator.serviceWorker.ready;
-    console.log("background sync");
-    await registration.sync.register("addEvent");
-  };
+  // const registerBackgroundSync = async () => {
+  //   const registration = await navigator.serviceWorker.ready;
+  //   console.log("background sync");
+  //   await registration.sync.register("addEvent");
+  // };
 
   const addEvent = async (event) => {
     try {
@@ -99,7 +99,6 @@ const EventForm = () => {
           "Content-Type": "application/json",
         }
       );
-      registerBackgroundSync();
       history.push(`/${auth.userId}/profile`);
     } catch (err) {}
   };
@@ -120,7 +119,7 @@ const EventForm = () => {
         Neues Event
       </Typography>
       <form
-        id="addEvent"
+        id="addEventForm"
         autoComplete="off"
         className={classes.Form}
         onSubmit={handleSubmit(addEvent)}
