@@ -35,19 +35,17 @@ const CategorySelector = (props) => {
         onClose={handleClose}
         onOpen={handleOpen}
       >
-        <Switch>
-          <MenuItem value="">
-            <em>...</em>
-          </MenuItem>
-          <MenuItem value={"Essen & Trinken"}>Essen und Trinken</MenuItem>
-          <MenuItem value={"Grillen"}>Grillen</MenuItem>
-          <MenuItem value={"Geburtstag"}>Geburtstag</MenuItem>
-          <MenuItem value={"Party"}>Party</MenuItem>
-          <MenuItem value={"Lernen"}>Lernen</MenuItem>
-          <MenuItem value={"Urlaub"}>Urlaub</MenuItem>
-          <MenuItem value={"Sport"}>Sport</MenuItem>
-          <MenuItem value={"Spieleabend"}>Spieleabend</MenuItem>
-        </Switch>
+        <MenuItem value="">
+          <em>...</em>
+        </MenuItem>
+        <MenuItem value={"Essen & Trinken"}>Essen und Trinken</MenuItem>
+        <MenuItem value={"Grillen"}>Grillen</MenuItem>
+        <MenuItem value={"Geburtstag"}>Geburtstag</MenuItem>
+        <MenuItem value={"Party"}>Party</MenuItem>
+        <MenuItem value={"Lernen"}>Lernen</MenuItem>
+        <MenuItem value={"Urlaub"}>Urlaub</MenuItem>
+        <MenuItem value={"Sport"}>Sport</MenuItem>
+        <MenuItem value={"Spieleabend"}>Spieleabend</MenuItem>
       </Select>
     </FormControl>
   );

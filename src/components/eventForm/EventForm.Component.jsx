@@ -73,7 +73,7 @@ const EventForm = () => {
   }, [register]);
 
   const history = useHistory();
-  const onSubmit = async (event) => {
+  const addEventOnSubmit = async (event) => {
     try {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/events",
@@ -114,7 +114,7 @@ const EventForm = () => {
       <form
         autoComplete="off"
         className={classes.Form}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(addEventOnSubmit)}
       >
         <TextField
           className={classes.FieldMargin}
