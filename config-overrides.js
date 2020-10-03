@@ -1,37 +1,26 @@
-const { join } = require("path");
-const { InjectManifest } = require("workbox-webpack-plugin");
-const { env } = require("process");
-
-const getPublicPath = (subPath) => join(__dirname, "public", subPath);
-
-const getPluginConfig = () => {
-  const baseConfig = {
-    swSrc: getPublicPath("custom-serviceWorker.js"),
-    maximumFileSizeToCacheInBytes: 100 * 1024 * 1024,
-  };
-  if (env.NODE_ENV === "production") {
-    return {
-      ...baseConfig,
-      swDest: getPublicPath("custom-serviceWorker.js"),
-      include: [/\.svg$/, /\.html$/, /\.css$/, /\.js$/],
-    };
-  }
-  return baseConfig;
-};
-
-const getInjectManifestPlugin = () => {
-  const config = getPluginConfig();
-  return new InjectManifest(config);
-};
-
-const getWebpackConfig = (config) => {
-  const configuredPlugin = getInjectManifestPlugin();
-  return {
-    ...config,
-    plugins: [...config.plugins, configuredPlugin],
-  };
-};
+const workboxPlugin = require("workbox-webpack-plugin");
+const path = require("path");
 
 module.exports = {
-  webpack: getWebpackConfig,
+  webpack: function (config, env) {
+    if (env === "production") {
+      const workboxConfigProd = {
+        swSrc: path.join(__dirname, "public", "custom-serviceWorker.js"),
+        swDest: "custom-serviceWorker.js",
+      };
+      config = removeSWPrecachePlugin(config);
+      config.plugins.push(new workboxPlugin.InjectManifest(workboxConfigProd));
+    }
+    return config;
+  },
 };
+
+function removeSWPrecachePlugin(config) {
+  const swPrecachePluginIndex = config.plugins.findIndex((element) => {
+    return element.constructor.name === "SWPrecacheWebpackPlugin";
+  });
+  if (swPrecachePluginIndex !== -1) {
+    config.plugins.splice(swPrecachePluginIndex, 1);
+  }
+  return config;
+}
