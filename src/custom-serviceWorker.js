@@ -19,10 +19,27 @@ self.addEventListener("install", (event) =>
 self.addEventListener("activate", (event) =>
   event.waitUntil(self.clients.claim())
 );
+
+precacheAndRoute([]);
+registerRoute(/\.*$/, new workbox.strategies.CacheFirst());
+
+const handlerCb = async ({ url, request, event, params }) => {
+  const response = await fetch(request);
+  const responseBody = await response.text();
+  return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
+};
+
+registerRoute(
+  handlerCb,
+  new CacheFirst({
+    cacheName: "currencies",
+  })
+);
+
 // app-shell
 registerRoute("/", new workbox.strategies.NetworkFirst());
 
-const backgroundSync = new BackgroundSyncPlugin("addEventOnSubmit");
+const backgroundSync = new BackgroundSyncPlugin("addEvent");
 
 registerRoute(
   "https://event-with-me.herokuapp.com/api/events",

@@ -73,7 +73,14 @@ const EventForm = () => {
   }, [register]);
 
   const history = useHistory();
-  const addEventOnSubmit = async (event) => {
+
+  const registerBackgroundSync = async () => {
+    const registration = await navigator.serviceWorker.ready;
+    console.log("background sync");
+    await registration.sync.register("addEvent");
+  };
+
+  const addEvent = async (event) => {
     try {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/events",
@@ -92,6 +99,7 @@ const EventForm = () => {
           "Content-Type": "application/json",
         }
       );
+      registerBackgroundSync();
       history.push(`/${auth.userId}/profile`);
     } catch (err) {}
   };
@@ -112,9 +120,10 @@ const EventForm = () => {
         Neues Event
       </Typography>
       <form
+        id="addEvent"
         autoComplete="off"
         className={classes.Form}
-        onSubmit={handleSubmit(addEventOnSubmit)}
+        onSubmit={handleSubmit(addEvent)}
       >
         <TextField
           className={classes.FieldMargin}
