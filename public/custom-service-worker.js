@@ -11,7 +11,7 @@ const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
 workbox.routing.registerRoute(
   ({ url }) =>
     url.pathname === "https://event-with-me.herokuapp.com/api/events",
-  new workbox.strategies.NetworkOnly({ plugins: [backgroundSync] }),
+  new workbox.strategies.NetworkFirst({ plugins: [backgroundSync] }),
   "POST"
 );
 
@@ -32,7 +32,7 @@ const handlerCb = async ({ url, request, event, params }) => {
 
 workbox.routing.registerRoute(
   handlerCb,
-  new workbox.strategies.CacheFirst({
+  new workbox.strategies.NetworkFirst({
     cacheName: "dynamic",
   })
 );
