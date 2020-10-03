@@ -32,7 +32,7 @@ const handlerCb = async ({ url, request, event, params }) => {
 
 workbox.routing.registerRoute(
   handlerCb,
-  new CacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: "dynamic",
   })
 );
