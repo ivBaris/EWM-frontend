@@ -22,7 +22,7 @@ const bgSyncPlugin = new workbox.backgroundSync.Plugin("todoQueue", {
 });
 
 workbox.routing.registerRoute(
-  process.env.REACT_APP_BACKEND_URL + "/events",
+  "https://event-with-me.herokuapp.com/api/events",
   console.log("hier"),
   new workbox.strategies.NetworkFirst({
     plugins: [bgSyncPlugin],
