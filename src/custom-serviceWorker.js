@@ -4,24 +4,16 @@ import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 import { BackgroundSyncPlugin } from "workbox-background-sync";
 import process from "process";
 
-/* eslint-disable no-undef */
-if (workbox) {
-  console.log(`Workbox is loaded 🎉`);
-} else {
-  console.log(`Workbox didn't load `);
-}
+const backgroundSync = new BackgroundSyncPlugin("addEvent");
 
-// eslint-disable-next-line
-self.addEventListener("install", (event) =>
-  event.waitUntil(self.skipWaiting())
-);
-// eslint-disable-next-line
-self.addEventListener("activate", (event) =>
-  event.waitUntil(self.clients.claim())
+registerRoute(
+  "https://event-with-me.herokuapp.com/api/events",
+  new NetworkOnly({ plugins: [backgroundSync] }),
+  "POST"
 );
 
-precacheAndRoute([]);
-registerRoute(/\.*$/, new workbox.strategies.CacheFirst());
+registerRoute(/\.*$/, new StaleWhileRevalidate({ cacheName: "static" }));
+registerRoute("/", new StaleWhileRevalidate({ cacheName: "static" }));
 
 const handlerCb = async ({ url, request, event, params }) => {
   const response = await fetch(request);
@@ -32,20 +24,8 @@ const handlerCb = async ({ url, request, event, params }) => {
 registerRoute(
   handlerCb,
   new CacheFirst({
-    cacheName: "currencies",
+    cacheName: "dynamic",
   })
-);
-
-// app-shell
-registerRoute("/", new workbox.strategies.NetworkFirst());
-
-const backgroundSync = new BackgroundSyncPlugin("addEvent");
-
-registerRoute(
-  "https://event-with-me.herokuapp.com/api/events",
-  console.log("hier"),
-  new NetworkOnly({ plugins: [backgroundSync] }),
-  "POST"
 );
 
 if (process.env.NODE_ENV === "production") {
