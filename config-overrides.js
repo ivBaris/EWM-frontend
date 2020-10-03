@@ -6,7 +6,7 @@ module.exports = {
     if (env === "production") {
       const workboxConfigProd = {
         swSrc: path.join(__dirname, "public", "custom-service-worker.js"),
-        swDest: "custom-service-worker.js",
+        swDest: "service-worker.js",
       };
       config = removeSWPrecachePlugin(config);
       config.plugins.push(new workboxPlugin.InjectManifest(workboxConfigProd));
