@@ -17,11 +17,11 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   /\.*$/,
-  new StaleWhileRevalidate({ cacheName: "static" })
+  new workbox.strategies.StaleWhileRevalidate({ cacheName: "static" })
 );
 workbox.routing.registerRoute(
   "/",
-  new StaleWhileRevalidate({ cacheName: "static" })
+  new workbox.strategies.StaleWhileRevalidate({ cacheName: "static" })
 );
 
 const handlerCb = async ({ url, request, event, params }) => {
