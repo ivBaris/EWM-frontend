@@ -4,6 +4,8 @@ import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
 import { BackgroundSyncPlugin } from "workbox-background-sync";
 import process from "process";
 
+console.log("XD bin drin");
+
 const backgroundSync = new BackgroundSyncPlugin("addEvent");
 
 registerRoute(
