@@ -12,7 +12,7 @@ const getPluginConfig = () => {
   if (env.NODE_ENV === "production") {
     return {
       ...baseConfig,
-      swDest: getPublicPath("service-worker.js"),
+      swDest: getPublicPath("custom-serviceWorker.js"),
       include: [/\.svg$/, /\.html$/, /\.css$/, /\.js$/],
     };
   }

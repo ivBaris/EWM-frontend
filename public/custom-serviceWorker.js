@@ -1,3 +1,5 @@
+importScripts("/precache-manifest.265d4829533261042425f08b8282723b.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate, NetworkOnly } from "workbox-strategies";
@@ -34,3 +36,4 @@ registerRoute(
 if (process.env.NODE_ENV === "production") {
   precacheAndRoute(self.__WB_MANIFEST);
 }
+
