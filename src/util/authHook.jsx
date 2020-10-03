@@ -19,15 +19,12 @@ export const useAuth = () => {
     localStorage.removeItem("userData");
   }, []);
 
-  useEffect(
-    () => {
-      const data = JSON.parse(localStorage.getItem("userData"));
-      if (data && data.token) {
-        login(data.userId, data, token);
-      }
-    }, // eslint-disable-next-line
-    [login]
-  );
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("userData"));
+    if (data && data.token) {
+      login(data.userId, data, token);
+    }
+  }, [login]);
 
   return { token, login, logout, userId };
 };

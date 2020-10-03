@@ -45,7 +45,7 @@ const EventForm = () => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}/friends`
+          `http://localhost:5000/api/users/${auth.userId}/friends`
         );
 
         setLoadedFriends(responseData);
@@ -76,7 +76,7 @@ const EventForm = () => {
   const onSubmit = async (event) => {
     try {
       await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/events",
+        "http://localhost:5000/api/events",
         "POST",
         JSON.stringify({
           title: event.title,

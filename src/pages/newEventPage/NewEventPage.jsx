@@ -5,7 +5,6 @@ import EventForm from "../../components/eventForm/EventForm.Component";
 const NewEventPage = () => {
   return (
     <div className="NewEventPage">
-      "hallo hier Bin ich"
       <EventForm />
     </div>
   );

@@ -38,7 +38,7 @@ const UpdateEventForm = () => {
     const fetchEvent = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/events/event/${eventId}`
+          `http://localhost:5000/api/events/event/${eventId}`
         );
         setLoadedEvent(responseData.event);
       } catch (err) {}
@@ -50,7 +50,7 @@ const UpdateEventForm = () => {
   const onSubmit = async (event) => {
     try {
       await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + `/events/event/${eventId}/edit`,
+        `http://localhost:5000/api/events/event/${eventId}/edit`,
         "PATCH",
         JSON.stringify({
           title: event.title,

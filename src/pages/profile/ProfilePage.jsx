@@ -20,7 +20,7 @@ const ProfilePage = () => {
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/users/${userId}`
+          `http://localhost:5000/api/users/${userId}`
         );
 
         setLoggedInUser(responseData);

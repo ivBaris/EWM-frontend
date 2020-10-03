@@ -18,7 +18,7 @@ const EventPage = () => {
     const fetchPotEvents = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/events/${userId}`
+          `http://localhost:5000/api/events/${userId}`
         );
         setLoadPotEvents(responseData.potentialEvents);
       } catch (err) {}

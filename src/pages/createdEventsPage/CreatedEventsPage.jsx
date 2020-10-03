@@ -18,7 +18,7 @@ const CreatedEventsPage = () => {
     const fetchCreatedEvents = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/events/${userId}/created-events`
+          `http://localhost:5000/api/events/${userId}/created-events`
         );
         setLoadCreatedEvents(responseData.events);
       } catch (err) {}
