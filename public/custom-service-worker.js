@@ -38,5 +38,5 @@ workbox.routing.registerRoute(
 );
 
 // if (process.env.NODE_ENV === "production") {
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 // }
