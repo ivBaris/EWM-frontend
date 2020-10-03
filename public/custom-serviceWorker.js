@@ -7,7 +7,8 @@ import process from "process";
 const backgroundSync = new BackgroundSyncPlugin("addEvent");
 
 registerRoute(
-  ({ url }) => "https://event-with-me.herokuapp.com/api/events",
+  ({ url }) =>
+    url.pathname === "https://event-with-me.herokuapp.com/api/events",
   new NetworkOnly({ plugins: [backgroundSync] }),
   "POST"
 );
