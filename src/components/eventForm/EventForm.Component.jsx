@@ -83,7 +83,6 @@ const EventForm = () => {
 
   const addEvent = async (event) => {
     try {
-      await registerBackgroundSync();
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/events",
         "POST",
