@@ -76,12 +76,14 @@ const EventForm = () => {
 
   const registerBackgroundSync = async () => {
     const registration = await navigator.serviceWorker.ready;
-    console.log("background sync");
+
     await registration.sync.register("addEvent");
+    console.log("background sync");
   };
 
   const addEvent = async (event) => {
     try {
+      await registerBackgroundSync();
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + "/events",
         "POST",
@@ -99,7 +101,6 @@ const EventForm = () => {
           "Content-Type": "application/json",
         }
       );
-      registerBackgroundSync();
       history.push(`/${auth.userId}/profile`);
     } catch (err) {}
   };
