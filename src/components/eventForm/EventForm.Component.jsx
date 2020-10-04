@@ -34,7 +34,7 @@ const EventForm = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(Date.now() - 0 * 24 * 60 * 60 * 1000)
   );
-  const { error, sendRequest, clearError } = useHttpClient();
+  const { error, sendRequest } = useHttpClient();
   const [isHereLoading, setIsHereLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
