@@ -14,12 +14,15 @@ self.addEventListener("fetch", (event) => {
       ({ url }) =>
         url.pathname === "https://event-with-me.herokuapp.com/api/events",
 
-      (test = new workbox.strategies.NetworkFirst({
+      new workbox.strategies.NetworkFirst({
         plugins: [backgroundSync],
-      })),
-      console.log(test),
+      }),
+      console.log(
+        new workbox.strategies.NetworkFirst({
+          plugins: [backgroundSync],
+        })
+      ),
       console.log("hier die url " + url),
-      test,
       "POST"
     );
   } else {
