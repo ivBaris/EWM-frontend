@@ -11,7 +11,7 @@ const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
 self.addEventListener("fetch", (event) => {
   if (event.request.method === "POST") {
     workbox.routing.registerRoute(
-      new RegExp(".+/event/new"),
+      "https://event-with-me.herokuapp.com/api/events",
 
       new workbox.strategies.NetworkOnly({
         plugins: [backgroundSync],
