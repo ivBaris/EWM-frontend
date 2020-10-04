@@ -79,11 +79,17 @@ const EventForm = () => {
   const registerBackgroundSync = async () => {
     const registration = await navigator.serviceWorker.ready;
 
+    if (registration) {
+      console.log("ist background sync");
+    } else {
+      console.log("nö");
+    }
+    console.log(registration.sync.register("addEvent"));
     await registration.sync.register("addEvent");
-    console.log("background sync");
   };
 
   const addEvent = async (event) => {
+    registerBackgroundSync();
     // try {
     //   await sendRequest(
     //     process.env.REACT_APP_BACKEND_URL + "/events",
