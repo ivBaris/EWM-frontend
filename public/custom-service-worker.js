@@ -4,26 +4,25 @@ importScripts(
 
 console.log("XD bin drin");
 
-const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
-  "addEvent"
-);
+// const backgroundSync =
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method === "POST") {
-    workbox.routing.registerRoute(
-      "https://event-with-me.herokuapp.com/api/events",
+    // workbox.routing.registerRoute(
+    //   "https://event-with-me.herokuapp.com/api/events",
 
-      new workbox.strategies.NetworkOnly({
-        plugins: [backgroundSync],
-      }),
-      console.log(
-        new workbox.strategies.NetworkOnly({
-          plugins: [backgroundSync],
-        })
-      ),
-      console.log("hier die url "),
-      "POST"
-    );
+    //   new workbox.strategies.NetworkOnly({
+    //     plugins: [backgroundSync],
+    //   }),
+    //   console.log(
+    //     new workbox.strategies.NetworkOnly({
+    //       plugins: [backgroundSync],
+    //     })
+    //   ),
+    //   console.log("hier die url "),
+    //   "POST"
+    // );
+    new workbox.backgroundSync.BackgroundSyncPlugin("addEvent");
   } else {
     console.log("Will nicht");
   }
