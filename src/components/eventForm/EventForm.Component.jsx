@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttpClient } from "../../util/httpHook";
+import axios from "axios";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Button from "@material-ui/core/Button";
@@ -78,6 +79,7 @@ const EventForm = () => {
 
   const registerBackgroundSync = async () => {
     const registration = await navigator.serviceWorker.ready;
+    await registration.sync.register("addEvent");
 
     if (registration) {
       console.log("ist background sync");
@@ -85,57 +87,24 @@ const EventForm = () => {
       console.log("nö");
     }
     console.log(registration.sync.register("addEvent"));
-    await registration.sync.register("addEvent");
   };
 
   const addEvent = async (event) => {
     registerBackgroundSync();
-    // try {
-    //   await sendRequest(
-    //     process.env.REACT_APP_BACKEND_URL + "/events",
-    //     "POST",
-    //     JSON.stringify({
-    //       title: event.title,
-    //       description: event.description,
-    //       category: event.category,
-    //       location: event.location,
-    //       date: event.date,
-    //       creatorId: auth.userId,
-    //       image: event.image,
-    //       potParticipants: event.potParticipants,
-    //     }),
-    //     {
-    //       "Content-Type": "application/json",
-    //     }
-    //   );
-    //   history.push(`/${auth.userId}/profile`);
-    // } catch (err) {}
     setIsHereLoading(true);
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/events`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: event.title,
-            description: event.description,
-            category: event.category,
-            location: event.location,
-            date: event.date,
-            creatorId: auth.userId,
-            image: event.image,
-            potParticipants: event.potParticipants,
-          }),
-        }
-      );
+    const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
 
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
+    try {
+      await axios.post(url, {
+        title: event.title,
+        description: event.description,
+        category: event.category,
+        location: event.location,
+        date: event.date,
+        creatorId: auth.userId,
+        image: event.image,
+        potParticipants: event.potParticipants,
+      });
       setIsHereLoading(false);
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
