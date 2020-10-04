@@ -9,7 +9,7 @@ const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
 );
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method != "POST") {
+  if (event.request.method === "POST") {
     workbox.routing.registerRoute(
       ({ url }) =>
         url.pathname === "https://event-with-me.herokuapp.com/api/events",
