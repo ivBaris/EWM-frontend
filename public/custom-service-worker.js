@@ -13,11 +13,11 @@ self.addEventListener("fetch", (event) => {
     workbox.routing.registerRoute(
       new RegExp(".+/event/new"),
 
-      new workbox.strategies.NetworkFirst({
+      new workbox.strategies.NetworkOnly({
         plugins: [backgroundSync],
       }),
       console.log(
-        new workbox.strategies.NetworkFirst({
+        new workbox.strategies.NetworkOnly({
           plugins: [backgroundSync],
         })
       ),
