@@ -164,6 +164,7 @@ const EventForm = () => {
         Neues Event
       </Typography>
       <form
+        key="addEvent"
         id="addEvent"
         autoComplete="off"
         className={classes.Form}

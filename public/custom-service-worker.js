@@ -11,7 +11,10 @@ const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
 workbox.routing.registerRoute(
   ({ url }) =>
     url.pathname === "https://event-with-me.herokuapp.com/api/events",
-  new workbox.strategies.NetworkFirst({ plugins: [backgroundSync] }),
+
+  (test = new workbox.strategies.NetworkFirst({ plugins: [backgroundSync] })),
+  console.log(test),
+  test,
   "POST"
 );
 
