@@ -8,13 +8,15 @@ const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
   "addEvent"
 );
 
-self.addEventListener('fetch', event => {
-  if (event.request.method != 'POST') {
+self.addEventListener("fetch", (event) => {
+  if (event.request.method != "POST") {
     workbox.routing.registerRoute(
       ({ url }) =>
         url.pathname === "https://event-with-me.herokuapp.com/api/events",
-    
-      (test = new workbox.strategies.NetworkFirst({ plugins: [backgroundSync] })),
+
+      (test = new workbox.strategies.NetworkFirst({
+        plugins: [backgroundSync],
+      })),
       console.log(test),
       test,
       "POST"
@@ -22,8 +24,7 @@ self.addEventListener('fetch', event => {
   } else {
     console.log("Will nicht");
   }
-}
-
+});
 
 workbox.routing.registerRoute(
   /\.*$/,
