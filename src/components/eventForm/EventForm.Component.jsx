@@ -34,7 +34,9 @@ const EventForm = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(Date.now() - 0 * 24 * 60 * 60 * 1000)
   );
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { error, sendRequest, clearError } = useHttpClient();
+  const [isHereLoading, setIsHereLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
 
   const handleDateChange = (date) => {
@@ -82,31 +84,67 @@ const EventForm = () => {
   };
 
   const addEvent = async (event) => {
+    // try {
+    //   await sendRequest(
+    //     process.env.REACT_APP_BACKEND_URL + "/events",
+    //     "POST",
+    //     JSON.stringify({
+    //       title: event.title,
+    //       description: event.description,
+    //       category: event.category,
+    //       location: event.location,
+    //       date: event.date,
+    //       creatorId: auth.userId,
+    //       image: event.image,
+    //       potParticipants: event.potParticipants,
+    //     }),
+    //     {
+    //       "Content-Type": "application/json",
+    //     }
+    //   );
+    //   history.push(`/${auth.userId}/profile`);
+    // } catch (err) {}
+    setIsHereLoading(true);
     try {
-      await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/events",
-        "POST",
-        JSON.stringify({
-          title: event.title,
-          description: event.description,
-          category: event.category,
-          location: event.location,
-          date: event.date,
-          creatorId: auth.userId,
-          image: event.image,
-          potParticipants: event.potParticipants,
-        }),
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/events`,
         {
-          "Content-Type": "application/json",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: event.title,
+            description: event.description,
+            category: event.category,
+            location: event.location,
+            date: event.date,
+            creatorId: auth.userId,
+            image: event.image,
+            potParticipants: event.potParticipants,
+          }),
         }
       );
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message);
+      }
+      setIsHereLoading(false);
       history.push(`/${auth.userId}/profile`);
-    } catch (err) {}
+    } catch (err) {
+      setIsHereLoading(false);
+      setErrorMessage(err.message || "Something went wrong, please try again.");
+    }
+  };
+
+  const clearError = () => {
+    setErrorMessage(null);
   };
 
   return (
     <div className={classes.EventForm}>
-      {isLoading && (
+      {isHereLoading && (
         <div className="loading-modal">
           <CircularProgress />
         </div>
@@ -209,7 +247,7 @@ const EventForm = () => {
             />
           )}
         />
-        {error && (
+        {errorMessage && (
           <Alert
             severity="error"
             action={
@@ -223,7 +261,7 @@ const EventForm = () => {
               </IconButton>
             }
           >
-            {error}
+            {errorMessage}
           </Alert>
         )}
         <div className={classes.ButtonsGrouped}>
