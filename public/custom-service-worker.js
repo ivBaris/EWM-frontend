@@ -18,6 +18,7 @@ self.addEventListener("fetch", (event) => {
         plugins: [backgroundSync],
       })),
       console.log(test),
+      console.log("hier die url " + url),
       test,
       "POST"
     );
