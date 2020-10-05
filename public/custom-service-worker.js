@@ -4,27 +4,26 @@ importScripts(
 
 console.log("XD bin drin");
 
-const showNotification = () => {
-  self.registration.showNotification("Post Sent", {
-    body: "You are back online and your post was successfully sent!",
-    icon: "assets/icon/256.png",
-    badge: "assets/icon/32png.png",
-  });
-};
+const backgroundSyncAdd = new workbox.backgroundSync.BackgroundSyncPlugin(
+  "addEvent"
+);
 
-const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
-  "addEvent",
-  {
-    callbacks: {
-      queueDidReplay: showNotification,
-    },
-  }
+const backgroundSyncNotify = new workbox.backgroundSync.BackgroundSyncPlugin(
+  "notifyEvent"
+);
+
+workbox.routing.registerRoute(
+  "https://event-with-me.herokuapp.com/api/events/notify",
+  new workbox.strategies.NetworkOnly({
+    plugins: [backgroundSyncAdd],
+  }),
+  "POST"
 );
 
 workbox.routing.registerRoute(
   "https://event-with-me.herokuapp.com/api/events",
   new workbox.strategies.NetworkOnly({
-    plugins: [backgroundSync],
+    plugins: [backgroundSyncNotify],
   }),
   "POST"
 );
