@@ -142,9 +142,7 @@ const EventForm = () => {
   const addEvent = async (event) => {
     setIsHereLoading(true);
     const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
-
     testnot();
-
     try {
       await axios.post(url, {
         title: event.title,
@@ -160,6 +158,7 @@ const EventForm = () => {
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
+      testnot();
       setErrorMessage(err.message || "Something went wrong, please try again.");
     }
   };

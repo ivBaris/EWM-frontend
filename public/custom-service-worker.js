@@ -13,7 +13,7 @@ const backgroundSyncNotify = new workbox.backgroundSync.BackgroundSyncPlugin(
 );
 
 workbox.routing.registerRoute(
-  "https://event-with-me.herokuapp.com/api/events/notify",
+  "https://event-with-me.herokuapp.com/api/events",
   new workbox.strategies.NetworkOnly({
     plugins: [backgroundSyncAdd],
   }),
@@ -21,7 +21,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  "https://event-with-me.herokuapp.com/api/events",
+  "https://event-with-me.herokuapp.com/api/events/notify",
   new workbox.strategies.NetworkOnly({
     plugins: [backgroundSyncNotify],
   }),
