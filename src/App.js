@@ -56,7 +56,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={StartPage} />
         <Route path="/auth" exact component={AuthPage} />
-        <Redirect to="/auth" />
+        <Redirect to="/" />
       </Switch>
     );
   }
