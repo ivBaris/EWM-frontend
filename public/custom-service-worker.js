@@ -38,6 +38,19 @@ workbox.routing.registerRoute(
   })
 );
 
+self.addEventListener("push", (event) => {
+  const data = event.data.json();
+  const { title } = data;
+
+  const body = {
+    body: data.body,
+  };
+
+  event.waitUntil(self.registration.showNotification(title, body));
+});
+
+console.log("gemacht");
+
 // if (process.env.NODE_ENV === "production") {
 // workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 // }

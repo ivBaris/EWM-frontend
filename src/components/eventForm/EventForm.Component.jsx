@@ -77,22 +77,73 @@ const EventForm = () => {
 
   const history = useHistory();
 
-  const registerBackgroundSync = async () => {
-    const registration = await navigator.serviceWorker.ready;
-    await registration.sync.register("addEvent");
+  // const registerBackgroundSync = async () => {
+  //   const registration = await navigator.serviceWorker.ready;
+  //   await registration.sync.register("addEvent");
 
-    if (registration) {
-      console.log("ist background sync");
-    } else {
-      console.log("nö");
+  //   if (registration) {
+  //     console.log("ist background sync");
+  //   } else {
+  //     console.log("nö");
+  //   }
+  //   console.log(registration.sync.register("addEvent"));
+  // };
+
+  // const convertedVapidKey = urlBase64ToUint8Array(process.env.VAPID_PUBLIC_KEY);
+
+  const vapidPublicKey =
+    "BKkzdu1noK_Q8XSyHQufHi1lBoIw8IOB91HHpN3fjwrPaoIDNnK-NWIfc3OVQxX_D-fnc2B6cx7Cu8X1q0pe0tI";
+
+  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
     }
-    console.log(registration.sync.register("addEvent"));
+    return outputArray;
+  }
+
+  const testnot = async () => {
+    await Notification.requestPermission(function (status) {
+      console.log("Notification permission status:", status);
+
+      if (status === "granted") {
+        navigator.serviceWorker.ready.then((registration) => {
+          if (!registration.pushManager) {
+            alert("Du wirst nicht benachrichtigt werden");
+            return;
+          }
+          console.log("bin hier");
+          registration.pushManager
+            .subscribe({
+              userVisibleOnly: true, //Always display notifications
+              applicationServerKey: convertedVapidKey,
+            })
+            .then((subscription) =>
+              axios.post(
+                `${process.env.REACT_APP_BACKEND_URL}/events/notify`,
+                subscription
+              )
+            )
+            .catch((err) => console.error("Push subscription error: ", err));
+        });
+      }
+    });
   };
 
   const addEvent = async (event) => {
-    registerBackgroundSync();
     setIsHereLoading(true);
     const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
+
+    testnot();
 
     try {
       await axios.post(url, {
