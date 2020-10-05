@@ -4,8 +4,21 @@ importScripts(
 
 console.log("XD bin drin");
 
+const showNotification = () => {
+  self.registration.showNotification("Post Sent", {
+    body: "You are back online and your post was successfully sent!",
+    icon: "assets/icon/256.png",
+    badge: "assets/icon/32png.png",
+  });
+};
+
 const backgroundSync = new workbox.backgroundSync.BackgroundSyncPlugin(
-  "addEvent"
+  "addEvent",
+  {
+    callbacks: {
+      queueDidReplay: showNotification,
+    },
+  }
 );
 
 workbox.routing.registerRoute(
@@ -52,5 +65,5 @@ self.addEventListener("push", (event) => {
 console.log("gemacht");
 
 // if (process.env.NODE_ENV === "production") {
-// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+//   workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 // }
