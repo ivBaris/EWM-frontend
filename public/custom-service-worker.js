@@ -30,14 +30,6 @@ workbox.routing.registerRoute(
   "POST"
 );
 
-workbox.routing.registerRoute(
-  "https://event-with-me.herokuapp.com/api/events/event/\b[w=.]*",
-  new workbox.strategies.NetworkOnly({
-    plugins: new workbox.backgroundSync.BackgroundSyncPlugin("deleteEvent"),
-  }),
-  "DELETE"
-);
-
 workbox.precaching.precacheAndRoute([
   { url: "/", revision: "383676" },
   { url: "/\b[w=.]*/profile", revision: "383679" },
@@ -56,8 +48,6 @@ workbox.routing.registerRoute(
 const handlerCb = async ({ url, request, event, params }) => {
   const response = await fetch(request);
   const responseBody = await response.text();
-  console.log(response);
-  console.log(responseBody);
   return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
 };
 
@@ -66,7 +56,6 @@ workbox.routing.registerRoute(
   new workbox.strategies.NetworkFirst({
     networkTimeoutSeconds: 1,
     cacheName: "dynamic",
-    callback: FALLBACK_HTML_URL,
   })
 );
 
@@ -81,9 +70,3 @@ self.addEventListener("push", (event) => {
 
   event.waitUntil(self.registration.showNotification(title, body));
 });
-
-// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
-
-// if (process.env.NODE_ENV === "production") {
-//   workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
-// }
