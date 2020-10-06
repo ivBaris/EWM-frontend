@@ -129,7 +129,6 @@ const EventForm = () => {
     setIsHereLoading(true);
     const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
     try {
-      notificationHandler(event.title);
       await axios.post(url, {
         title: event.title,
         description: event.description,
@@ -141,11 +140,12 @@ const EventForm = () => {
         potParticipants: event.potParticipants,
       });
       setIsHereLoading(false);
+      notificationHandler(event.title);
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
       notificationHandler(event.title);
-      setErrorMessage(err.message || "Something went wrong, please try again.");
+      setErrorMessage(err.message || "Ein Problem ist aufgetreten");
     }
   };
 

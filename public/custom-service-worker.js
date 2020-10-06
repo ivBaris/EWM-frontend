@@ -28,13 +28,15 @@ workbox.routing.registerRoute(
   "POST"
 );
 
+workbox.precaching.precacheAndRoute([{ url: "/", revision: "383676" }]);
+
 workbox.routing.registerRoute(
   /\.*$/,
   new workbox.strategies.CacheFirst({ cacheName: "static" })
 );
 workbox.routing.registerRoute(
-  "/",
-  new workbox.strategies.CacheFirst({ cacheName: "static" })
+  "https://event-with-me.netlify.app/\b[w=.]*/profile",
+  new workbox.strategies.CacheFirst({ cacheName: "profile" })
 );
 
 const handlerCb = async ({ url, request, event, params }) => {
