@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHttpClient } from "../../../util/httpHook";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import ownStyles from "../../../util/Styles";
 import Card from "@material-ui/core/Card";
@@ -76,9 +77,12 @@ const EventCard = (props) => {
 
   const eventDeleteHandler = async () => {
     try {
-      await sendRequest(
-        `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
-        "DELETE"
+      // await sendRequest(
+      //   `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
+      //   "DELETE"
+      // );
+      axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`
       );
       setDeletionSuccess(true);
     } catch (err) {}

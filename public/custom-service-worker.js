@@ -41,6 +41,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   { url: "/", revision: "383676" },
   { url: "/\b[w=.]*/profile", revision: "383679" },
+  { url: FALLBACK_HTML_URL, revision: "383699" },
 ]);
 
 workbox.routing.registerRoute(
