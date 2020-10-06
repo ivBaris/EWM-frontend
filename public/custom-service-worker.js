@@ -64,7 +64,7 @@ self.addEventListener("push", (event) => {
   event.waitUntil(self.registration.showNotification(title, body));
 });
 
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
 // if (process.env.NODE_ENV === "production") {
 //   workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
