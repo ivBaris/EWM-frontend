@@ -40,6 +40,8 @@ workbox.routing.registerRoute(
 const handlerCb = async ({ url, request, event, params }) => {
   const response = await fetch(request);
   const responseBody = await response.text();
+  console.log(response);
+  console.log(responseBody);
   return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
 };
 
@@ -61,7 +63,7 @@ self.addEventListener("push", (event) => {
   event.waitUntil(self.registration.showNotification(title, body));
 });
 
-console.log("gemacht");
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
 // if (process.env.NODE_ENV === "production") {
 //   workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);

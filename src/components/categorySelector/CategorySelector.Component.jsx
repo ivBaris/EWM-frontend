@@ -1,5 +1,4 @@
 import React from "react";
-import { Switch } from "react-router-dom";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import ownStyles from "../../util/Styles";

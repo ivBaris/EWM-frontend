@@ -35,7 +35,7 @@ const EventForm = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(Date.now() - 0 * 24 * 60 * 60 * 1000)
   );
-  const { error, sendRequest } = useHttpClient();
+  const { sendRequest } = useHttpClient();
   const [isHereLoading, setIsHereLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
@@ -77,20 +77,6 @@ const EventForm = () => {
 
   const history = useHistory();
 
-  // const registerBackgroundSync = async () => {
-  //   const registration = await navigator.serviceWorker.ready;
-  //   await registration.sync.register("addEvent");
-
-  //   if (registration) {
-  //     console.log("ist background sync");
-  //   } else {
-  //     console.log("nö");
-  //   }
-  //   console.log(registration.sync.register("addEvent"));
-  // };
-
-  // const convertedVapidKey = urlBase64ToUint8Array(process.env.VAPID_PUBLIC_KEY);
-
   const vapidPublicKey =
     "BKkzdu1noK_Q8XSyHQufHi1lBoIw8IOB91HHpN3fjwrPaoIDNnK-NWIfc3OVQxX_D-fnc2B6cx7Cu8X1q0pe0tI";
 
@@ -98,10 +84,10 @@ const EventForm = () => {
 
   function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
+
+    const base64 = (base64String + padding) // eslint-disable-next-line
       .replace(/\-/g, "+")
       .replace(/_/g, "/");
-
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
 
@@ -111,7 +97,7 @@ const EventForm = () => {
     return outputArray;
   }
 
-  const testnot = async () => {
+  const notificationHandler = async (title) => {
     await Notification.requestPermission(function (status) {
       console.log("Notification permission status:", status);
 
@@ -128,10 +114,10 @@ const EventForm = () => {
               applicationServerKey: convertedVapidKey,
             })
             .then((subscription) =>
-              axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}/events/notify`,
-                subscription
-              )
+              axios.post(`${process.env.REACT_APP_BACKEND_URL}/events/notify`, {
+                title,
+                subscription,
+              })
             )
             .catch((err) => console.error("Push subscription error: ", err));
         });
@@ -142,8 +128,8 @@ const EventForm = () => {
   const addEvent = async (event) => {
     setIsHereLoading(true);
     const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
-    testnot();
     try {
+      notificationHandler(event.title);
       await axios.post(url, {
         title: event.title,
         description: event.description,
@@ -158,7 +144,7 @@ const EventForm = () => {
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
-      testnot();
+      notificationHandler(event.title);
       setErrorMessage(err.message || "Something went wrong, please try again.");
     }
   };
