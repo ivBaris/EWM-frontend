@@ -2,7 +2,9 @@ importScripts(
   "https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js"
 );
 
-console.log("XD bin drin");
+console.log("ServiceWorker...");
+
+const FALLBACK_HTML_URL = "./offline.html";
 
 const backgroundSyncAdd = new workbox.backgroundSync.BackgroundSyncPlugin(
   "addEvent"
@@ -28,7 +30,18 @@ workbox.routing.registerRoute(
   "POST"
 );
 
-workbox.precaching.precacheAndRoute([{ url: "/", revision: "383676" }]);
+workbox.routing.registerRoute(
+  "https://event-with-me.herokuapp.com/api/events/event/\b[w=.]*",
+  new workbox.strategies.NetworkOnly({
+    plugins: new workbox.backgroundSync.BackgroundSyncPlugin("deleteEvent"),
+  }),
+  "DELETE"
+);
+
+workbox.precaching.precacheAndRoute([
+  { url: "/", revision: "383676" },
+  { url: "/\b[w=.]*/profile", revision: "383679" },
+]);
 
 workbox.routing.registerRoute(
   /\.*$/,
@@ -50,7 +63,9 @@ const handlerCb = async ({ url, request, event, params }) => {
 workbox.routing.registerRoute(
   handlerCb,
   new workbox.strategies.NetworkFirst({
+    networkTimeoutSeconds: 1,
     cacheName: "dynamic",
+    callback: FALLBACK_HTML_URL,
   })
 );
 
