@@ -58,6 +58,7 @@ self.addEventListener("push", (event) => {
 
   const body = {
     body: data.body,
+    icon: "./apple-icon-60x60-dunplab-manifest-19505.png",
   };
 
   event.waitUntil(self.registration.showNotification(title, body));

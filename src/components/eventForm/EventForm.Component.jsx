@@ -260,21 +260,39 @@ const EventForm = () => {
           )}
         />
         {errorMessage && (
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={clearError}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            {errorMessage}
-          </Alert>
+          <div>
+            <Alert
+              severity="error"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={clearError}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              {errorMessage}
+            </Alert>
+            <Alert
+              severity="info"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={clearError}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              Falls Sie Chrome Verwenden wird ihre Veranstaltong erzeugt sobald
+              sie wieder Online sind
+            </Alert>
+          </div>
         )}
         <div className={classes.ButtonsGrouped}>
           <Button
