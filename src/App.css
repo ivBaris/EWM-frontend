@@ -16,6 +16,12 @@
   justify-content: space-around;
 }
 
+.jss168 {
+  width: 60%;
+  height: auto;
+  flex-grow: 1;
+}
+
 .loading-modal {
   position: fixed;
   z-index: 5;
