@@ -51,68 +51,13 @@ const handlerCb = async ({ request }) => {
   return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
 };
 
-// workbox.routing.registerRoute(
-//   handlerCb,
-//   new workbox.strategies.NetworkFirst({
-//     networkTimeoutSeconds: 1,
-//     cacheName: "dynamic",
-//   })
-// );
-
-// var networkFirst = workbox.strategies.networkFirst({
-//   networkTimeoutSeconds: 1,
-//   cacheName: "dynamic",
-// });
-
-// workbox.routing.registerRoute(handlerCb, ({ event }) => {
-//   return networkFirst
-//     .handle({ event })
-//     .then((response) => {
-//       return response || caches.match(FALLBACK_HTML_URL);
-//     })
-//     .catch(() => caches.match(FALLBACK_HTML_URL));
-// });
-
-// var networkFirst = workbox.strategies.networkFirst({
-//   cacheName: "cache-pages",
-// });
-
-// const customHandler = async (args) => {
-//   try {
-//     const response = await networkFirst.handle(args);
-//     return response || (await caches.match(FALLBACK_HTML_URL));
-//   } catch (error) {
-//     return await caches.match(FALLBACK_HTML_URL);
-//   }
-// };
-
-const CACHE_NAME = "offline-html";
-
-self.addEventListener("install", async (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.add(FALLBACK_HTML_URL))
-  );
-});
-
-workbox.navigationPreload.enable();
-
-const networkFirst = new workbox.strategies.networkFirst({
-  cacheName: "cache-pages",
-});
-
-const navigationHandler = async (params) => {
-  try {
-    // Attempt a network request.
-    return await networkFirst.handle(params);
-  } catch (error) {
-    // If it fails, return the cached HTML.
-    return caches.match(FALLBACK_HTML_URL, {
-      cacheName: CACHE_NAME,
-    });
-  }
-};
-
-// workbox.routing.registerRoute(handlerCb, customHandler);
+workbox.routing.registerRoute(
+  handlerCb,
+  new workbox.strategies.NetworkFirst({
+    networkTimeoutSeconds: 1,
+    cacheName: "dynamic",
+  })
+);
 
 self.addEventListener("push", (event) => {
   const data = event.data.json();
