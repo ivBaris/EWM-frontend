@@ -59,34 +59,34 @@ const handlerCb = async ({ request }) => {
 //   })
 // );
 
-// const networkFirst = workbox.strategies.networkFirst({
+// var networkFirst = workbox.strategies.networkFirst({
 //   networkTimeoutSeconds: 1,
 //   cacheName: "dynamic",
 // });
 
-workbox.routing.registerRoute(
-  handlerCb,
-  // return networkFirst
-  //   .handle({ event })
-  //   .then((response) => {
-  //     return response || caches.match(FALLBACK_HTML_URL);
-  //   })
-  //   .catch(() => caches.match(FALLBACK_HTML_URL));
-  function (args) {
-    return workbox.strategies
-      .networkFirst({
-        networkTimeoutSeconds: 1,
-        cacheName: "dynamic",
-      })
-      .handle(args)
-      .then(function (response) {
-        if (typeof response == "undefined") {
-          return caches.match("offline");
-        }
-        return response;
-      });
+// workbox.routing.registerRoute(handlerCb, ({ event }) => {
+//   return networkFirst
+//     .handle({ event })
+//     .then((response) => {
+//       return response || caches.match(FALLBACK_HTML_URL);
+//     })
+//     .catch(() => caches.match(FALLBACK_HTML_URL));
+// });
+
+var networkFirst = workbox.strategies.networkFirst({
+  cacheName: "cache-pages",
+});
+
+const customHandler = async (args) => {
+  try {
+    const response = await networkFirst.handle(args);
+    return response || (await caches.match(FALLBACK_HTML_URL));
+  } catch (error) {
+    return await caches.match(FALLBACK_HTML_URL);
   }
-);
+};
+
+workbox.routing.registerRoute(handlerCb, customHandler);
 
 self.addEventListener("push", (event) => {
   const data = event.data.json();
