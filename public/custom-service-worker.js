@@ -53,10 +53,21 @@ const handlerCb = async ({ request }) => {
 
 workbox.routing.registerRoute(
   handlerCb,
-  new workbox.strategies.NetworkFirst({
-    networkTimeoutSeconds: 1,
-    cacheName: "dynamic",
-  })
+  async ({ event }) => {
+    try {
+      return await workbox.strategies
+        .NetworkFirst({
+          cacheName: "cache-pages",
+        })
+        .handle({ event });
+    } catch (error) {
+      return caches.match(FALLBACK_HTML_URL);
+    }
+  }
+  // new workbox.strategies.NetworkFirst({
+  //   networkTimeoutSeconds: 1,
+  //   cacheName: "dynamic",
+  // })
 );
 
 self.addEventListener("push", (event) => {
