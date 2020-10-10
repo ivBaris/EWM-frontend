@@ -59,7 +59,7 @@ const handlerCb = async ({ request }) => {
 //   })
 // );
 
-const networkFirst = new workbox.strategies.networkFirst({
+const networkFirst = workbox.strategies.networkFirst({
   networkTimeoutSeconds: 1,
   cacheName: "dynamic",
 });

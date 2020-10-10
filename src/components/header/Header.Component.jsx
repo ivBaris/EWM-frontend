@@ -9,12 +9,14 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="header--logo">
-        <Button color="inherit">
+        <Button
+          color="inherit"
+          component={Link}
+          to={`https://event-with-me.netlify.app/`}
+        >
           <img
             src={require("../../assets/images/Logo.png")}
             alt="event-with-me"
-            component={Link}
-            to={`/`}
           />
         </Button>
       </div>
