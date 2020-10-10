@@ -59,22 +59,28 @@ const handlerCb = async ({ request }) => {
 //   })
 // );
 
-// const networkFirst = workbox.strategies.networkFirst({
-//   networkTimeoutSeconds: 1,
-//   cacheName: "dynamic",
-// });
-
-workbox.routing.registerRoute(handlerCb, ({ event }) => {
-  return new workbox.strategies.networkFirst({
-    networkTimeoutSeconds: 1,
-    cacheName: "dynamic",
-  })
-    .handle({ event })
-    .then((response) => {
-      return response || caches.match(FALLBACK_HTML_URL);
-    })
-    .catch(() => caches.match(FALLBACK_HTML_URL));
+const networkFirst = workbox.strategies.networkFirst({
+  networkTimeoutSeconds: 1,
+  cacheName: "dynamic",
 });
+
+workbox.routing.registerRoute(
+  handlerCb,
+  // return networkFirst
+  //   .handle({ event })
+  //   .then((response) => {
+  //     return response || caches.match(FALLBACK_HTML_URL);
+  //   })
+  //   .catch(() => caches.match(FALLBACK_HTML_URL));
+  function (args) {
+    return networkFirst.handle(args).then(function (response) {
+      if (typeof response == "undefined") {
+        return caches.match("offline");
+      }
+      return response;
+    });
+  }
+);
 
 self.addEventListener("push", (event) => {
   const data = event.data.json();
