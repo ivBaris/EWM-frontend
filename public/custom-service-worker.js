@@ -73,9 +73,9 @@ const handlerCb = async ({ request }) => {
 //     .catch(() => caches.match(FALLBACK_HTML_URL));
 // });
 
-var networkFirst = workbox.strategies.networkFirst({
-  cacheName: "cache-pages",
-});
+// var networkFirst = workbox.strategies.networkFirst({
+//   cacheName: "cache-pages",
+// });
 
 // const customHandler = async (args) => {
 //   try {
