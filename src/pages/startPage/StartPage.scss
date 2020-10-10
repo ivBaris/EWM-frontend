@@ -12,4 +12,16 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+
+  @media only screen and (min-width: 650px) {
+    width: 80%;
+    left: 10%;
+    right: 10%;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    left: 25%;
+    right: 25%;
+  }
 }

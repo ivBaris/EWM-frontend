@@ -5,9 +5,11 @@ import { useHttpClient } from "../../util/httpHook";
 
 import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 
 import UserCard from "../../components/cards/userCard/UserCard.Component";
+
+import "./Profilepage.scss";
 
 const ProfilePage = () => {
   const classes = ownStyles();
@@ -71,17 +73,19 @@ const ProfilePage = () => {
           Freunde
         </Button>
       </div>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.ctaButton}
-        startIcon={<AddCircleOutlineIcon />}
-        size="large"
-        component={Link}
-        to={`/event/new`}
-      >
-        Event erstellen
-      </Button>
+      <div className="cta-button">
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.ctaButton}
+          startIcon={<AddCircleOutlineIcon />}
+          size="large"
+          component={Link}
+          to={`/event/new`}
+        >
+          Event erstellen
+        </Button>
+      </div>
     </div>
   );
 };

@@ -6,29 +6,29 @@ console.log("ServiceWorker...");
 
 const FALLBACK_HTML_URL = "./offline.html";
 
-const backgroundSyncAdd = new workbox.backgroundSync.BackgroundSyncPlugin(
-  "addEvent"
-);
+// const backgroundSyncAdd = new workbox.backgroundSync.BackgroundSyncPlugin(
+//   "addEvent"
+// );
 
-const backgroundSyncNotify = new workbox.backgroundSync.BackgroundSyncPlugin(
-  "notifyEvent"
-);
+// const backgroundSyncNotify = new workbox.backgroundSync.BackgroundSyncPlugin(
+//   "notifyEvent"
+// );
 
-workbox.routing.registerRoute(
-  "https://event-with-me.herokuapp.com/api/events",
-  new workbox.strategies.NetworkOnly({
-    plugins: [backgroundSyncAdd],
-  }),
-  "POST"
-);
+// workbox.routing.registerRoute(
+//   "http://localhost:5000/api/events",
+//   new workbox.strategies.NetworkOnly({
+//     plugins: [backgroundSyncAdd],
+//   }),
+//   "POST"
+// );
 
-workbox.routing.registerRoute(
-  "https://event-with-me.herokuapp.com/api/events/notify",
-  new workbox.strategies.NetworkOnly({
-    plugins: [backgroundSyncNotify],
-  }),
-  "POST"
-);
+// workbox.routing.registerRoute(
+//   "https://event-with-me.herokuapp.com/api/events/notify",
+//   new workbox.strategies.NetworkOnly({
+//     plugins: [backgroundSyncNotify],
+//   }),
+//   "POST"
+// );
 
 workbox.precaching.precacheAndRoute([
   { url: "/", revision: "383676" },
@@ -45,19 +45,33 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({ cacheName: "profile" })
 );
 
-const handlerCb = async ({ url, request, event, params }) => {
+const handlerCb = async ({ request }) => {
   const response = await fetch(request);
   const responseBody = await response.text();
   return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
 };
 
-workbox.routing.registerRoute(
-  handlerCb,
-  new workbox.strategies.NetworkFirst({
-    networkTimeoutSeconds: 1,
-    cacheName: "dynamic",
-  })
-);
+// workbox.routing.registerRoute(
+//   handlerCb,
+//   new workbox.strategies.NetworkFirst({
+//     networkTimeoutSeconds: 1,
+//     cacheName: "dynamic",
+//   })
+// );
+
+const networkFirst = new workbox.strategies.networkFirst({
+  networkTimeoutSeconds: 1,
+  cacheName: "dynamic",
+});
+
+workbox.routing.registerRoute(handlerCb, ({ event }) => {
+  return networkFirst
+    .handle({ event })
+    .then((response) => {
+      return response || caches.match(FALLBACK_HTML_URL);
+    })
+    .catch(() => caches.match(FALLBACK_HTML_URL));
+});
 
 self.addEventListener("push", (event) => {
   const data = event.data.json();
@@ -69,4 +83,14 @@ self.addEventListener("push", (event) => {
   };
 
   event.waitUntil(self.registration.showNotification(title, body));
+});
+
+const queue = new workbox.backgroundSync.Queue("myQueueName");
+
+self.addEventListener("fetch", (event) => {
+  const promiseChain = fetch(event.request.clone()).catch((err) => {
+    return queue.pushRequest({ request: event.request });
+  });
+
+  event.waitUntil(promiseChain);
 });

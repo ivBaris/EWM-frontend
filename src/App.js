@@ -20,6 +20,7 @@ import Header from "./components/header/Header.Component";
 import CreatedEventsPage from "./pages/createdEventsPage/CreatedEventsPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ParticipationPage from "./pages/participationPage/ParticipationPage";
+import aboutPage from "./pages/aboutPage/aboutPage";
 
 import "./App.css";
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/:userId/my-events" exact component={CreatedEventsPage} />
         <Route path="/:userId/friends" exact component={FriendsPage} />
         <Route path={`/event/new`} exact component={NewEventPage} />
+        <Route path={`/about`} exact component={aboutPage} />
         <Route
           path={`/event/:eventId/update`}
           exact

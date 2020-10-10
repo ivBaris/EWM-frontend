@@ -24,7 +24,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 
 const EventForm = () => {
   const classes = ownStyles();
@@ -144,7 +144,7 @@ const EventForm = () => {
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
-      notificationHandler(event.title);
+      // notificationHandler(event.title);
       setErrorMessage(err.message || "Ein Problem ist aufgetreten");
     }
   };
@@ -218,7 +218,7 @@ const EventForm = () => {
           id="event-description"
           label="Beschreibung"
           name="description"
-          inputRef={register({ required: true, maxLength: 200 })}
+          inputRef={register({ required: true, minLength: 6, maxLength: 200 })}
           multiline
           rows={5}
           rowsMax={5}

@@ -9,10 +9,12 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="header--logo">
-        <Button color="inherit" component={Link} to="/">
+        <Button color="inherit">
           <img
             src={require("../../assets/images/Logo.png")}
             alt="event-with-me"
+            component={Link}
+            to={`/`}
           />
         </Button>
       </div>

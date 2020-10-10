@@ -1,7 +1,7 @@
 import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 

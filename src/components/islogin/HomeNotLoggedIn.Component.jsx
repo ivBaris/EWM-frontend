@@ -13,6 +13,8 @@ const HomeNotLoggedIn = () => {
         <img
           src={require("../../assets/images/Logo.png")}
           alt="event-with-me"
+          component={Link}
+          to={`/`}
         />
         <Typography className="HomeNotLoggedIn--info-text" variant="body1">
           Erstelle Veranstaltungen wie Geburtstage, Partys, Grillabende,
