@@ -59,13 +59,16 @@ const handlerCb = async ({ request }) => {
 //   })
 // );
 
-const networkFirst = workbox.strategies.networkFirst({
-  networkTimeoutSeconds: 1,
-  cacheName: "dynamic",
-});
+// const networkFirst = workbox.strategies.networkFirst({
+//   networkTimeoutSeconds: 1,
+//   cacheName: "dynamic",
+// });
 
 workbox.routing.registerRoute(handlerCb, ({ event }) => {
-  return networkFirst
+  return new workbox.strategies.networkFirst({
+    networkTimeoutSeconds: 1,
+    cacheName: "dynamic",
+  })
     .handle({ event })
     .then((response) => {
       return response || caches.match(FALLBACK_HTML_URL);
