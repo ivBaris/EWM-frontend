@@ -73,10 +73,11 @@ workbox.routing.registerRoute(
   //   })
   //   .catch(() => caches.match(FALLBACK_HTML_URL));
   function (args) {
-    return new workbox.strategies.networkFirst({
-      networkTimeoutSeconds: 1,
-      cacheName: "dynamic",
-    })
+    return workbox.strategies
+      .networkFirst({
+        networkTimeoutSeconds: 1,
+        cacheName: "dynamic",
+      })
       .handle(args)
       .then(function (response) {
         if (typeof response == "undefined") {
