@@ -157,7 +157,7 @@ const EventCard = (props) => {
         )}
         {error && (
           <Alert severity="warning">
-            Offline ist diese funktion nicht Möglich
+            Die ausführung wird bei bestehender Internetverbindung ausgeführt
           </Alert>
         )}
         {deletionSuccess && (

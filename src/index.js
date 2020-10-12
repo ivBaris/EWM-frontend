@@ -22,11 +22,6 @@ const theme = createMuiTheme({
       main: "#ce1126",
       textPrimary: "#fff",
     },
-    contrastThreshold: 3,
-    tonalOffset: 0.2,
-  },
-  typography: {
-    fontFamily: "Nunito Sans",
   },
 });
 

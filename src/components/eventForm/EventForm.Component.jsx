@@ -107,10 +107,9 @@ const EventForm = () => {
             alert("Du wirst nicht benachrichtigt werden");
             return;
           }
-          console.log("bin hier");
           registration.pushManager
             .subscribe({
-              userVisibleOnly: true, //Always display notifications
+              userVisibleOnly: true,
               applicationServerKey: convertedVapidKey,
             })
             .then((subscription) =>
@@ -144,7 +143,6 @@ const EventForm = () => {
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
-      // notificationHandler(event.title);
       setErrorMessage(err.message || "Ein Problem ist aufgetreten");
     }
   };
