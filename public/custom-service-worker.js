@@ -87,13 +87,3 @@ self.addEventListener("fetch", (event) => {
     event.waitUntil(promiseChain);
   }
 });
-
-const pushQueue = new workbox.backgroundSync.Queue("pushEvents");
-
-self.addEventListener("push", (event) => {
-  const promiseChain = fetch(event.request.clone()).catch((err) => {
-    return pushQueue.pushRequest({ request: event.request });
-  });
-
-  event.waitUntil(promiseChain);
-});

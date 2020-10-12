@@ -143,6 +143,7 @@ const EventForm = () => {
       history.push(`/${auth.userId}/profile`);
     } catch (err) {
       setIsHereLoading(false);
+      notificationHandler(event.title);
       setErrorMessage(err.message || "Ein Problem ist aufgetreten");
     }
   };
