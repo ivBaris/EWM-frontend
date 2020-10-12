@@ -64,17 +64,17 @@ workbox.routing.registerRoute(
   })
 );
 
-// self.addEventListener("push", (event) => {
-//   const data = event.data.json();
-//   const { title } = data;
+self.addEventListener("push", (event) => {
+  const data = event.data.json();
+  const { title } = data;
 
-//   const body = {
-//     body: data.body,
-//     icon: "./apple-icon-60x60-dunplab-manifest-19505.png",
-//   };
+  const body = {
+    body: data.body,
+    icon: "./apple-icon-60x60-dunplab-manifest-19505.png",
+  };
 
-//   event.waitUntil(self.registration.showNotification(title, body));
-// });
+  event.waitUntil(self.registration.showNotification(title, body));
+});
 
 const queue = new workbox.backgroundSync.Queue("myQueueName");
 
