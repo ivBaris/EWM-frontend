@@ -76,7 +76,7 @@ self.addEventListener("push", (event) => {
   event.waitUntil(self.registration.showNotification(title, body));
 });
 
-const queue = new workbox.backgroundSync.Queue("myQueueName");
+const queue = new workbox.backgroundSync.Queue("fetchEvents");
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") {
@@ -86,4 +86,14 @@ self.addEventListener("fetch", (event) => {
 
     event.waitUntil(promiseChain);
   }
+});
+
+const pushQueue = new workbox.backgroundSync.Queue("pushEvents");
+
+self.addEventListener("push", (event) => {
+  const promiseChain = fetch(event.request.clone()).catch((err) => {
+    return pushQueue.pushRequest({ request: event.request });
+  });
+
+  event.waitUntil(promiseChain);
 });
