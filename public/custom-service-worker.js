@@ -6,30 +6,6 @@ console.log("ServiceWorker...");
 
 const FALLBACK_HTML_URL = "./offline.html";
 
-// const backgroundSyncAdd = new workbox.backgroundSync.BackgroundSyncPlugin(
-//   "addEvent"
-// );
-
-// const backgroundSyncNotify = new workbox.backgroundSync.BackgroundSyncPlugin(
-//   "notifyEvent"
-// );
-
-// workbox.routing.registerRoute(
-//   "http://localhost:5000/api/events",
-//   new workbox.strategies.NetworkOnly({
-//     plugins: [backgroundSyncAdd],
-//   }),
-//   "POST"
-// );
-
-// workbox.routing.registerRoute(
-//   "https://event-with-me.herokuapp.com/api/events/notify",
-//   new workbox.strategies.NetworkOnly({
-//     plugins: [backgroundSyncNotify],
-//   }),
-//   "POST"
-// );
-
 workbox.precaching.precacheAndRoute([
   { url: "/", revision: "383676" },
   { url: FALLBACK_HTML_URL, revision: "383699" },
@@ -39,21 +15,17 @@ workbox.routing.registerRoute(
   /\.*$/,
   new workbox.strategies.CacheFirst({ cacheName: "static" })
 );
-workbox.routing.registerRoute(
-  "https://event-with-me.netlify.app/\b[w=.]*/profile",
-  new workbox.strategies.CacheFirst({ cacheName: "profile" })
-);
 
 const handlerCb = async ({ request }) => {
   const response = await fetch(request);
   const responseBody = await response.text();
-  return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`);
+  return new Response(`${responseBody}`);
 };
 
 workbox.routing.registerRoute(
   handlerCb,
   new workbox.strategies.NetworkFirst({
-    networkTimeoutSeconds: 1,
+    networkTimeoutSeconds: 2,
     cacheName: "dynamic",
     plugins: [
       new workbox.expiration.ExpirationPlugin({
