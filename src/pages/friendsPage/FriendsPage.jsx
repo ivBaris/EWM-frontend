@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useHttpClient } from "../../util/httpHook";
 import { AuthContext } from "../../context/AuthContext";
 
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";

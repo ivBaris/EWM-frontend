@@ -39,7 +39,11 @@ const EventDetailPage = (detailId) => {
           createdBy={eventDetail.createdBy}
           date={eventDetail.date}
           image={eventDetail.image}
-          potParticipants={eventDetail.potParticipants.length + 1}
+          potParticipants={
+            eventDetail.potParticipants.length +
+            eventDetail.participants.length +
+            1
+          }
           participants={eventDetail.participants.length + 1}
           description={eventDetail.description}
         />

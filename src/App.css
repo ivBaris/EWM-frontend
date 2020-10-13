@@ -1,6 +1,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600&display=swap");
 
 /* --------------- */
+
+.MuiBottomNavigation-root {
+  width: 100%;
+}
+
+@media only screen and (min-width: 650px) {
+  body {
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  .MuiBottomNavigation-root {
+    width: 80%;
+  }
+
+  .jss19 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  body {
+    width: 50%;
+    margin-left: 25%;
+  }
+  .MuiBottomNavigation-root {
+    width: 50%;
+  }
+  .jss19 {
+    width: 50%;
+  }
+}
+
 .page {
   padding: 3.5rem 0;
   background: #318fb5;
@@ -16,6 +49,12 @@
   justify-content: space-around;
 }
 
+.jss168 {
+  width: 60%;
+  height: auto;
+  flex-grow: 1;
+}
+
 .loading-modal {
   position: fixed;
   z-index: 5;
@@ -25,4 +64,6 @@
   width: 100vw;
   height: 100vh;
   top: 0;
+  left: 25%;
+  right: 25%;
 }

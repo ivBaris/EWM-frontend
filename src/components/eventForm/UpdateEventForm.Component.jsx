@@ -11,6 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import "date-fns";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DateFnsUtils from "@date-io/date-fns";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Checkbox from "@material-ui/core/Checkbox";
 import CloseIcon from "@material-ui/icons/Close";
 import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,14 +22,15 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 
 const UpdateEventForm = () => {
   const classes = ownStyles();
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, setValue, errors } = useForm();
   const [loadedEvent, setLoadedEvent] = useState();
   const [selectedDate, setSelectedDate] = useState("");
+  const [loadedFriends, setLoadedFriends] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
   const eventId = useParams().eventId;
@@ -33,6 +38,32 @@ const UpdateEventForm = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const handleParticipant = (e, value) => {
+    setValue(
+      "potParticipants",
+      value.map((userId) => {
+        return userId._id;
+      })
+    );
+  };
+
+  useEffect(() => {
+    register("potParticipants");
+  }, [register]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const responseData = await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/users/${auth.userId}/friends`
+        );
+
+        setLoadedFriends(responseData);
+      } catch (err) {}
+    };
+    fetchUsers();
+  }, [sendRequest, auth.userId]);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -56,6 +87,7 @@ const UpdateEventForm = () => {
           title: event.title,
           description: event.description,
           date: event.date,
+          potParticipants: event.potParticipants,
         }),
         {
           "Content-Type": "application/json",
@@ -109,6 +141,7 @@ const UpdateEventForm = () => {
               id="date-picker-dialog"
               format="dd/MM/yyyy"
               value={selectedDate}
+              defaultValue={loadedEvent ? loadedEvent.date : ""}
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change date",
@@ -131,6 +164,35 @@ const UpdateEventForm = () => {
               errors.description &&
               "Bitte eine Beschreibung angeben max 200 Wörter"
             }
+          />{" "}
+          <Autocomplete
+            name="availableParticipants"
+            onChange={handleParticipant}
+            className={classes.FieldMargin}
+            multiple
+            id="checkboxes-tags-demo"
+            options={loadedFriends ? loadedFriends.friends : ""}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name}
+            renderOption={(option, { selected }) => (
+              <React.Fragment>
+                <Checkbox
+                  icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                  checkedIcon={<CheckBoxIcon fontSize="small" />}
+                  checked={selected}
+                />
+                {option.name}
+              </React.Fragment>
+            )}
+            style={{ color: "red" }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Freunde"
+                placeholder="Freunde"
+              />
+            )}
           />
           {error && (
             <Alert

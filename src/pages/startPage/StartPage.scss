@@ -6,10 +6,22 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: url(../../assets/images/maddi-bazzocco-waNAJOI7Jz8-unsplash.jpg)
-    no-repeat center center;
+  background: url(../../assets/images/ewm-background.jpg) no-repeat center
+    center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+
+  @media only screen and (min-width: 650px) {
+    width: 80%;
+    left: 10%;
+    right: 10%;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    left: 25%;
+    right: 25%;
+  }
 }

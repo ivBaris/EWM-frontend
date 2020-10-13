@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useHttpClient } from "../../../util/httpHook";
 import { useParams } from "react-router-dom";
 
-import ownStyles from "../../../util/Styles";
+import ownStyles from "../../../Styles/Styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,12 +22,35 @@ import "./EventCard.Styles.scss";
 
 const EventCard = (props) => {
   const classes = ownStyles();
-  const { isLoading, sendRequest } = useHttpClient();
+  const { isLoading, sendRequest, error } = useHttpClient();
   const [loggedInUserName, setLoggedInUserName] = useState();
   const [participationSuccess, setParticipationSuccess] = useState(false);
   const [rmParticipationSuccess, setRmParticipationSuccess] = useState(false);
   const [deletionSuccess, setDeletionSuccess] = useState(false);
   const userId = useParams().userId;
+
+  // const title = props.title;
+  // const dateForm = props.date.split("/");
+  // const dateBefore = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+  // dateBefore.setHours(0, 0, 0, 0);
+  // const dateStart = new Date(dateForm[2], dateForm[1] - 1, dateForm[0]);
+  // dateStart.setHours(0, 0, 0, 0);
+
+  // useEffect(() => {
+  //   async function showNotification() {
+  //     const result = await Notification.requestPermission();
+  //     if (
+  //       result === "granted" &&
+  //       dateBefore.toString() === dateStart.toString()
+  //     ) {
+  //       const noti = new Notification(title, {
+  //         body: "Event startet in kürze",
+  //         icon: "../../../../public/favicon-32x32-dunplab-manifest-19505.png",
+  //       });
+  //     }
+  //   }
+  //   showNotification();
+  // }, []);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -48,7 +71,7 @@ const EventCard = (props) => {
         `${process.env.REACT_APP_BACKEND_URL}/events/event/${props.id}`,
         "PUT",
         JSON.stringify({
-          participants: userId,
+          participant: userId,
         }),
         {
           "Content-Type": "application/json",
@@ -130,6 +153,11 @@ const EventCard = (props) => {
         {participationSuccess && (
           <Alert severity="success">
             Teilnahme an Veranstaltung erfolgreich
+          </Alert>
+        )}
+        {error && (
+          <Alert severity="warning">
+            Die ausführung wird bei bestehender Internetverbindung ausgeführt
           </Alert>
         )}
         {deletionSuccess && (

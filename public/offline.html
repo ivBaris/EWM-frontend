@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon_ewm.ico" />
@@ -19,19 +19,30 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>EventWithMe</title>
+    <style>
+      body {
+        margin: 1rem;
+        background-color: #318fb5;
+      }
+      h1 {
+        color: #fff;
+      }
+      p {
+        color: #fff;
+      }
+      button {
+        padding: 0.4rem;
+      }
+    </style>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <div class="offlinePage">
+      <h1>Sie sind Offline</h1>
+      <p>
+        Diese Seite kann nicht erreicht werden da sie noch nicht
+        zwischengespeichert wurde gehen Sie zurück
+      </p>
+      <a href="/"><button>HAUPTMENÜ</button></a>
+    </div>
   </body>
 </html>

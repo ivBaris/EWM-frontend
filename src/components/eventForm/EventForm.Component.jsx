@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttpClient } from "../../util/httpHook";
+import axios from "axios";
 
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Button from "@material-ui/core/Button";
@@ -23,7 +24,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 
 const EventForm = () => {
   const classes = ownStyles();
@@ -34,7 +35,9 @@ const EventForm = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date(Date.now() - 0 * 24 * 60 * 60 * 1000)
   );
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { sendRequest } = useHttpClient();
+  const [isHereLoading, setIsHereLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
 
   const handleDateChange = (date) => {
@@ -74,39 +77,84 @@ const EventForm = () => {
 
   const history = useHistory();
 
-  const registerBackgroundSync = async () => {
-    const registration = await navigator.serviceWorker.ready;
-    console.log("background sync");
-    await registration.sync.register("addEvent");
+  const vapidPublicKey =
+    "BKkzdu1noK_Q8XSyHQufHi1lBoIw8IOB91HHpN3fjwrPaoIDNnK-NWIfc3OVQxX_D-fnc2B6cx7Cu8X1q0pe0tI";
+
+  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+
+    const base64 = (base64String + padding) // eslint-disable-next-line
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  const notificationHandler = async (title) => {
+    await Notification.requestPermission(function (status) {
+      console.log("Notification permission status:", status);
+
+      if (status === "granted") {
+        navigator.serviceWorker.ready.then((registration) => {
+          if (!registration.pushManager) {
+            alert("Du wirst nicht benachrichtigt werden");
+            return;
+          }
+          registration.pushManager
+            .subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: convertedVapidKey,
+            })
+            .then((subscription) =>
+              axios.post(`${process.env.REACT_APP_BACKEND_URL}/events/notify`, {
+                title,
+                subscription,
+              })
+            )
+            .catch((err) => console.error("Push subscription error: ", err));
+        });
+      }
+    });
   };
 
   const addEvent = async (event) => {
+    setIsHereLoading(true);
+    const url = `${process.env.REACT_APP_BACKEND_URL}/events`;
     try {
-      await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + "/events",
-        "POST",
-        JSON.stringify({
-          title: event.title,
-          description: event.description,
-          category: event.category,
-          location: event.location,
-          date: event.date,
-          creatorId: auth.userId,
-          image: event.image,
-          potParticipants: event.potParticipants,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-      registerBackgroundSync();
+      await axios.post(url, {
+        title: event.title,
+        description: event.description,
+        category: event.category,
+        location: event.location,
+        date: event.date,
+        creatorId: auth.userId,
+        image: event.image,
+        potParticipants: event.potParticipants,
+      });
+      setIsHereLoading(false);
+      notificationHandler(event.title);
       history.push(`/${auth.userId}/profile`);
-    } catch (err) {}
+    } catch (err) {
+      setIsHereLoading(false);
+      notificationHandler(event.title);
+      setErrorMessage(err.message || "Ein Problem ist aufgetreten");
+    }
+  };
+
+  const clearError = () => {
+    setErrorMessage(null);
   };
 
   return (
     <div className={classes.EventForm}>
-      {isLoading && (
+      {isHereLoading && (
         <div className="loading-modal">
           <CircularProgress />
         </div>
@@ -120,6 +168,7 @@ const EventForm = () => {
         Neues Event
       </Typography>
       <form
+        key="addEvent"
         id="addEvent"
         autoComplete="off"
         className={classes.Form}
@@ -168,7 +217,7 @@ const EventForm = () => {
           id="event-description"
           label="Beschreibung"
           name="description"
-          inputRef={register({ required: true, maxLength: 200 })}
+          inputRef={register({ required: true, minLength: 6, maxLength: 200 })}
           multiline
           rows={5}
           rowsMax={5}
@@ -209,22 +258,40 @@ const EventForm = () => {
             />
           )}
         />
-        {error && (
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={clearError}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            {error}
-          </Alert>
+        {errorMessage && (
+          <div>
+            <Alert
+              severity="error"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={clearError}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              {errorMessage}
+            </Alert>
+            <Alert
+              severity="info"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={clearError}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+            >
+              Falls Sie Chrome Verwenden wird ihre Veranstaltong erzeugt sobald
+              sie wieder Online sind
+            </Alert>
+          </div>
         )}
         <div className={classes.ButtonsGrouped}>
           <Button

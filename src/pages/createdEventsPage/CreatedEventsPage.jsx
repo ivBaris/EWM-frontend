@@ -5,7 +5,7 @@ import { useHttpClient } from "../../util/httpHook";
 import EventCard from "../../components/cards/eventCard/EventCard.Component";
 
 import Typography from "@material-ui/core/Typography";
-import ownStyles from "../../util/Styles";
+import ownStyles from "../../Styles/Styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const CreatedEventsPage = () => {

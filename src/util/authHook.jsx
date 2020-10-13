@@ -23,7 +23,7 @@ export const useAuth = () => {
     const data = JSON.parse(localStorage.getItem("userData"));
     if (data && data.token) {
       login(data.userId, data, token);
-    }
+    } // eslint-disable-next-line
   }, [login]);
 
   return { token, login, logout, userId };

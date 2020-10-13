@@ -14,7 +14,7 @@ const HomeLoggedIn = () => {
         variant="contained"
         color="primary"
         component={Link}
-        to={`/`}
+        to={`/about`}
         size="large"
       >
         Über Uns

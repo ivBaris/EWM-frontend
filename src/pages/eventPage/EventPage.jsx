@@ -24,7 +24,7 @@ const EventPage = () => {
       } catch (err) {}
     };
     fetchPotEvents();
-  }, [sendRequest, userId, setLoadPotEvents]);
+  }, [sendRequest, userId]);
 
   const changeParticipation = (pEventId) => {
     setLoadPotEvents((prevEvents) =>
@@ -40,14 +40,11 @@ const EventPage = () => {
         </div>
       )}
       <CategorySelector setCategory={setCategory} />
+
       {category !== ""
         ? loadPotEvents &&
           loadPotEvents
-            .filter(
-              (e) =>
-                e.category === category &&
-                !e.participants.find((f) => f === userId)
-            )
+            .filter((e) => e.category === category)
             .map((event) => (
               <EventCard
                 key={event.id}
@@ -66,22 +63,20 @@ const EventPage = () => {
               />
             ))
         : loadPotEvents &&
-          loadPotEvents
-            .filter((e) => !e.participants.find((f) => f === userId))
-            .map((event) => (
-              <EventCard
-                key={event.id}
-                id={event.id}
-                title={event.title}
-                kategory={event.kategory}
-                location={event.location}
-                creatorId={event.creatorId}
-                date={event.date}
-                image={event.image}
-                potParticipants={event.potParticipants.length + 1}
-                participants={event.participants.length + 1}
-              />
-            ))}
+          loadPotEvents.map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              kategory={event.kategory}
+              location={event.location}
+              creatorId={event.creatorId}
+              date={event.date}
+              image={event.image}
+              potParticipants={event.potParticipants.length + 1}
+              participants={event.participants.length + 1}
+            />
+          ))}
     </div>
   );
 };
